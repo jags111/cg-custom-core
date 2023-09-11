@@ -1,5 +1,5 @@
 import folder_paths
-import os
+import os, random
 
 application_root_directory = os.path.dirname(folder_paths.__file__)
 application_web_extensions_directory = os.path.join(application_root_directory, "web", "extensions", "cg-nodes", "utilities")
@@ -28,3 +28,16 @@ class classproperty(object):
     def __get__(self, obj, owner):
         return self.f(owner)
     
+class SeedContext():
+    """
+    Context Manager to allow one or more random numbers to be generated, optionally using a specified seed, 
+    without changing the random number sequence for other code.
+    """
+    def __init__(self, seed=None):
+        self.seed = seed
+    def __enter__(self):
+        self.state = random.getstate()
+        if self.seed:
+            random.seed(self.seed)
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        random.setstate(self.state)
