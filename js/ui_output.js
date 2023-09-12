@@ -14,7 +14,7 @@ function terminate_function(message) {
 };
 
 function modify_self_function(message) {
-	message.modify_self.forEach(self_modify => {
+	message.forEach(self_modify => {
 		var w = this.widgets?.find((w) => w.name === self_modify[0])
 		if (w) {
 			w.value = self_modify[1];
@@ -24,7 +24,7 @@ function modify_self_function(message) {
 };
 
 function modify_other_function (message) {
-	message.modify_other.forEach(update => {
+	message.forEach(update => {
 		var node_id = parseInt(update[0]);
 		var widget_name = update[1];
 		var text = update[2];
@@ -37,7 +37,7 @@ function modify_other_function (message) {
 };
 
 function display_text_function(message) {
-	var text = message.display_text.join('');
+	var text = message.join('');
 	var w = this.widgets?.find((w) => w.name === "display_text_widget");
 	if (w === undefined) {
 		w = ComfyWidgets["STRING"](this, "display_text_widget", ["STRING", { multiline: true }], app).widget;
