@@ -1,23 +1,21 @@
 import { app } from "../../../scripts/app.js";
 import { api } from "../../../scripts/api.js";
+import { registerUiOutputListener } from "./ui_output_dispatch.js";
+
+function terminate_function(message) {
+	message = message.join('');
+	if (message==="terminate") { 
+		document.getElementById("autoQueueCheckbox").checked = false;
+		api.interrupt(); 
+	} else if (message==="autoqueueoff") {
+		document.getElementById("autoQueueCheckbox").checked = false;
+	}
+}
 
 app.registerExtension({
 	name: "cg.custom.core.Terminate",
 	version: 2,
 	async beforeRegisterNodeDef(nodeType, nodeData, app) {
-		if (nodeData.ui_output.includes('terminate')) {
-			const onExecuted = nodeType.prototype.onExecuted;
-
-			nodeType.prototype.onExecuted = function (message) {
-				onExecuted?.apply(this, arguments);
-				const terminate = message.terminate.join('');
-				if (terminate==="terminate") { 
-					document.getElementById("autoQueueCheckbox").checked = false;
-					api.interrupt(); 
-				} else if (terminate==="autoqueueoff") {
-					document.getElementById("autoQueueCheckbox").checked = false;
-				}
-			}
-		}
+		registerUiOutputListener(nodeType, nodeData, 'terminate', terminate_function);
 	},
 });
