@@ -28,10 +28,11 @@ function modify_other_function (message) {
 		var node_id = parseInt(update[0]);
 		var widget_name = update[1];
 		var text = update[2];
-		var widget = this.graph._nodes_by_id[node_id]?.widgets.find((w) => w.name===widget_name);
+		var node = this.graph._nodes_by_id[node_id];
+		var widget = node?.widgets.find((w) => w.name===widget_name);
 		if (widget) { 
 			widget.value = text; 
-			this.graph._nodes_by_id[node_id].onResize?.(this.size);
+			node.onResize?.(node.size);
 		} else { console.log("cg.custom.core.ModifyOther - Widget "+widget_name+" not found")}
 	});
 };
