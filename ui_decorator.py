@@ -12,6 +12,7 @@ def ui_signal(signals:str|list[str]):
 
     So ui_signals(["first","second"]) will wrap a function returning (something, somethingelse, first_signal, second_signal)
     and will return { "ui": {"first":first_signal, "second":second_signal}, "result":(something, somethingelse) }
+    (except that `None` will be silently dropped)
     """
     signals:iter = [signals,] if isinstance(signals,str) else signals
     def decorator(clazz):
@@ -27,7 +28,8 @@ def ui_signal(signals:str|list[str]):
             returns_tuple  = returns_tuple[:-len(signals)]
 
             for i,key in enumerate(signals):
-                returns_ui[key] = popped_returns[i]
+                if popped_returns[i] is not None:
+                    returns_ui[key] = popped_returns[i]
 
             return { "ui":returns_ui, "result": returns_tuple }
         clazz._ui_signal_decorated_function = _ui_signal_decorated_function
