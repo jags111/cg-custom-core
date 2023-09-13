@@ -23,6 +23,9 @@ function modify_self_function(message) {
 	});
 };
 
+
+
+
 function modify_other_function (message) {
 	message.forEach(update => {
 		var node_id = parseInt(update[0]);
@@ -50,6 +53,11 @@ function display_text_function(message) {
 	this.onResize?.(this.size);
 };
 
+function set_title_color_function(message) {
+	this.color = message.join('');
+	this.onResize?.(this.size);
+};
+
 app.registerExtension({
 	name: "cg.custom.core.DisplayText",
 	version: 3,
@@ -58,6 +66,7 @@ app.registerExtension({
 		registerUiOutputListener(nodeType, nodeData, 'display_text', display_text_function);
         registerUiOutputListener(nodeType, nodeData, 'modify_self', modify_self_function);
         registerUiOutputListener(nodeType, nodeData, 'modify_other', modify_other_function);
+		registerUiOutputListener(nodeType, nodeData, 'set_title_color', set_title_color_function);
 	},
 });
 
