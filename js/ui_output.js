@@ -23,9 +23,6 @@ function modify_self_function(message) {
 	});
 };
 
-
-
-
 function modify_other_function (message) {
 	message.forEach(update => {
 		var node_id = parseInt(update[0]);
