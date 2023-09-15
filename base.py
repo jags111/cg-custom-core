@@ -1,8 +1,11 @@
-import folder_paths
 import os, random
 
-application_root_directory = os.path.dirname(folder_paths.__file__)
-application_web_extensions_directory = os.path.join(application_root_directory, "web", "extensions", "cg-nodes", "utilities")
+try:
+    import folder_paths
+    application_root_directory = os.path.dirname(folder_paths.__file__)
+    application_web_extensions_directory = os.path.join(application_root_directory, "web", "extensions", "cg-nodes", "utilities")
+except:
+    pass # not in a ComfyUI environment
 
 class BaseNode:
     def __init__(self):
