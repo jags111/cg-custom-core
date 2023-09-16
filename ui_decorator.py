@@ -37,6 +37,8 @@ def ui_signal(signals:str|list[str]):
         clazz.OUTPUT_NODE = True
         clazz.UI_OUTPUT = clazz.UI_OUTPUT+"," if hasattr(clazz, 'UI_OUTPUT') else ""
         clazz.UI_OUTPUT += ",".join(signals)
+        clazz.DESCRIPTION = clazz.UI_OUTPUT+"," if hasattr(clazz, 'UI_OUTPUT') else ""
+        clazz.DESCRIPTION += ",".join(signals)
         return clazz
 
     return decorator
