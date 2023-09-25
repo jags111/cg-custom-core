@@ -30,6 +30,8 @@ def ui_signal(signals:str|list[str]):
             for i,key in enumerate(signals):
                 if popped_returns[i] is not None:
                     returns_ui[key] = popped_returns[i]
+                    if isinstance(returns_ui[key], str):
+                        returns_ui[key] = (returns_ui[key],)
 
             return { "ui":returns_ui, "result": returns_tuple }
         clazz._ui_signal_decorated_function = _ui_signal_decorated_function

@@ -4,11 +4,10 @@ import { ComfyWidgets } from "../../../scripts/widgets.js";
 import { registerUiOutputListener } from "./ui_output_dispatch.js";
 
 function terminate_function(message) { 
-	message = message.join('');
-	if (message==="terminate") { 
+	if (message[0]==="terminate") { 
 		document.getElementById("autoQueueCheckbox").checked = false;
 		api.interrupt(); 
-	} else if (message==="autoqueueoff") {
+	} else if (message[0]==="autoqueueoff") {
 		document.getElementById("autoQueueCheckbox").checked = false;
 	}
 };
@@ -38,7 +37,7 @@ function modify_other_function (message) {
 };
 
 function display_text_function(message) {
-	var text = message.join('');
+	var text = message[0];
 	var w = this.widgets?.find((w) => w.name === "display_text_widget");
 	if (w === undefined) {
 		w = ComfyWidgets["STRING"](this, "display_text_widget", ["STRING", { multiline: true }], app).widget;
@@ -51,11 +50,7 @@ function display_text_function(message) {
 };
 
 function set_title_color_function(message) {
-	if (Array.isArray(message)) {
-		var col = message.join('');
-	} else {
-		var col = message;
-	}
+	var col = message[0];
 	if (col==='reset') {
 		if (this.color_was_originally==='not-set') { col = undefined; } 
 		else { col = this.color_was_originally; }
