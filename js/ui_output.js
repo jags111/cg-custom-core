@@ -51,7 +51,21 @@ function display_text_function(message) {
 };
 
 function set_title_color_function(message) {
-	this.color = message.join('');
+	if (Array.isArray(message)) {
+		var col = message.join('');
+	} else {
+		var col = message;
+	}
+	if (col==='reset') {
+		if (this.color_was_originally==='not-set') { col = undefined; } 
+		else { col = this.color_was_originally; }
+	} else {
+		if (this.color_was_originally===undefined) {
+			if (this.color) { this.color_was_originally = this.color; }
+			else { this.color_was_originally = "not-set"; }
+		}
+	}
+	this.color = col;
 	this.onResize?.(this.size);
 };
 
