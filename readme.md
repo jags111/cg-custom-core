@@ -41,12 +41,13 @@ where output1 and output2 are as declared in your RETURN_TYPES, and message1 is 
 
 To use an existing message, that's all you need to do. The code above will allow the custom node to return a text string, which will be displayed by the custom node on the front end. Try it!
 
-The message tyeps defined are (see code in `ui_output.js`):
-- `display_text` - as above
+The message types defined are (see code in `ui_output.js`):
+- `display_text` - as above.  Optionally, send a tuple ( f"id={x}", text ) to set the text of the node with node_id x.
 - `terminate` - if you send `terminate`, the UI will attempt to cancel the run (and turn off auto-queue). If you send `autoqueueoff` it will just turn off auto-queue. 
 - `set_title_color` - will set the node to the (css-format) color specified. Optionally, send a tuple ( f"id={x}", colorString ) to set the color of the node with node_id x.
 - `modify_self` - send a list of tuples, each of which is two strings (widget_name, value), and the node will set it's widget with each name to the specified value. Note this doesn't change the value for the current run.
 - `modify_other` - send a list of tuples of three strings (node_id, widget_name, value), and for each the node will set the value of a widget on another node to that value. Note this doesn't change the value for the current run.
+
 
 ## Adding new messages
 
