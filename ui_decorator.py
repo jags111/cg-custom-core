@@ -1,8 +1,19 @@
-def ui_signal(signals:str|list[str]):
+from collections.abc import Iterable
+
+def recursive_add(signals:list, args):
+    for arg in args:
+        if isinstance(arg, str):
+            signals.append(arg)
+        elif isinstance(arg, Iterable):
+            signals = recursive_add(signals, arg)
+        else:
+            raise Exception("ui_decorator takes str or iter(str)")
+    return signals
+
+def ui_signal(*args):
     """
     Return a decorator for Node classes.
-    @param signals - a list of strings that name the signals to be sent to the UI. 
-    (For convenience, a string gets converted to a list of length 1)
+    @param one or more strings or list of strings
 
     The decorator performs the following:
     The class has OUTPUT_NODE set to True.
@@ -14,7 +25,8 @@ def ui_signal(signals:str|list[str]):
     and will return { "ui": {"first":first_signal, "second":second_signal}, "result":(something, somethingelse) }
     (except that `None` will be silently dropped)
     """
-    signals:iter = [signals,] if isinstance(signals,str) else signals
+    signals = recursive_add([], args)
+
     def decorator(clazz):
         internal_function_name = getattr(clazz,'FUNCTION')
         if internal_function_name=='_ui_signal_decorated_function':
