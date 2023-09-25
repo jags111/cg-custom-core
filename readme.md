@@ -27,7 +27,7 @@ An easily expandable framework for custom nodes to send messages to the front en
 
 - use the ui_signal decorator on a custom node class to declare that it sends one or more messages:
 ```python
-@ui_signal(['display_text'])
+@ui_signal('display_text')
 class my_custom_node():
 ```
 
@@ -44,14 +44,10 @@ To use an existing message, that's all you need to do. The code above will allow
 The message tyeps defined are (see code in `ui_output.js`):
 - `display_text` - as above
 - `terminate` - if you send `terminate`, the UI will attempt to cancel the run (and turn off auto-queue). If you send `autoqueueoff` it will just turn off auto-queue. 
-- `set_title_color` - will set the node to the (css-format) color specified.
-- `modify_self` - send a tuple of two strings (widget_name, value), and the node will set it's widget with that name to that value. Note this doesn't change the value for the current run.
-- `modify_other` - send a tuple of three strings (node_id, widget_name, value), and the node will try to set the value of a widget on another node to that value. Note this doesn't change the value for the current run.
+- `set_title_color` - will set the node to the (css-format) color specified. Optionally, send a tuple ( f"id={x}", colorString ) to set the color of the node with node_id x.
+- `modify_self` - send a list of tuples, each of which is two strings (widget_name, value), and the node will set it's widget with each name to the specified value. Note this doesn't change the value for the current run.
+- `modify_other` - send a list of tuples of three strings (node_id, widget_name, value), and for each the node will set the value of a widget on another node to that value. Note this doesn't change the value for the current run.
 
 ## Adding new messages
 
 If you look at `ui_output.js` you'll see that to add a new message you just have to define a JavaScript function, and add it to the list of message-function mapping in the list of calls to `registerUiOutputListener`. 
-
-# But...
-
-This whole mechanism depends on two lines of code being changed in the main code. There's a PR to make it happen [#1512](https://github.com/comfyanonymous/ComfyUI/pull/1512); another PR would incorporate all of this code into the codebase [#1483](https://github.com/comfyanonymous/ComfyUI/pull/1483), which may not fit with comfyanonymous' plans!
