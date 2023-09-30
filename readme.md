@@ -2,6 +2,13 @@
 
 This repository provides python and javascript utilities that I use in a lot of my [custom nodes](https://github.com/chrisgoringe/cg-nodes-index). You may find some of it useful.
 
+## Installation
+
+Most nodes that use this will automatically install. If not, change to your custom_node directory and install with (note the directory is specified... hyphens bad, underscores good).
+```
+git clone https://github.com/chrisgoringe/cg-custom-core.git cg_custom_core
+```
+
 ## base.py
 
 Contains:
