@@ -8,3 +8,7 @@ application_web_extensions_directory = os.path.join(application_root_directory, 
 shutil.copytree(module_js_directory, application_web_extensions_directory, dirs_exist_ok=True)
 
 NODE_CLASS_MAPPINGS = {}
+
+CC_VERSION = 2.1
+
+__ALL__ = [NODE_CLASS_MAPPINGS, CC_VERSION]
