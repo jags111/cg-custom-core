@@ -9,7 +9,53 @@ Most nodes that use this will automatically install. If not, change to your cust
 git clone https://github.com/chrisgoringe/cg-custom-core.git cg_custom_core
 ```
 
-## base.py
+## Dependency
+
+To make this a dependency for another custom node, put this code in your `__init__.py`
+```python
+try:
+    from custom_nodes.cg_custom_core import CC_VERSION
+    if CC_VERSION < 2.2:                                    # specify the minimum version you need as a float
+        raise Exception()
+except: 
+    print("cg_custom_core 2.2 not found - will try to install - you may need to restart afterwards")
+    from .install import installer
+    import os
+    import folder_paths
+    application_root_directory = os.path.dirname(folder_paths.__file__)
+    installer(os.path.join(application_root_directory,"custom_nodes"))
+```
+
+and add this install.py
+
+```python
+import os, git, sys
+sys.path.insert(0,os.path.join(os.path.dirname(os.path.realpath(__file__)),"..",".."))
+
+def installer(custom_node_path):
+    repo_url = 'https://github.com/chrisgoringe/cg-custom-core.git/'
+    repo_path = os.path.join(custom_node_path,"cg_custom_core")
+    if os.path.exists(os.path.join(repo_path, '.git')):
+        print("Updating cg_custom_nodes")
+        repo:git.Repo = git.Repo(repo_path)
+        origin = repo.remote(name='origin')
+        origin.pull(rebase=True)
+        repo.git.submodule('update','--init','--recursive')
+        repo.close()
+    else:
+        print("Installing cg_custom_nodes")
+        repo = git.Repo.clone_from(repo_url, repo_path)
+        repo.git.clear_cache()
+        repo.git.submodule('update','--init','--recursive')
+        repo.close()
+
+if 'custom_nodes' in os.getcwd():
+    installer(os.path.join(os.getcwd(),".."))
+```
+
+The last bit ensures that if your custom node is installed using the Comfy Manager, the latest version will be installed (because the manager runs install.py from the custom node's root directory, which (should) contain 'custom_nodes' in the filepath); but otherwise the intaller needs to be explicitly called (as we did in the __init__.py above).
+
+# base.py
 
 Contains:
 
@@ -28,7 +74,7 @@ z = random.random()           # z = 0.08718.... whether doit is True or False, o
 
 Without SeedContext, the value of z would depend on whether doit was True or False.
 
-## ui_decorator.py, ui_output_dispatch.js and ui_output.js
+# ui_decorator.py, ui_output_dispatch.js and ui_output.js
 
 An easily expandable framework for custom nodes to send messages to the front end. The basic usage is as follows:
 
@@ -59,3 +105,19 @@ The message types defined are (see code in `ui_output.js`):
 ## Adding new messages
 
 If you look at `ui_output.js` you'll see that to add a new message you just have to define a JavaScript function, and add it to the list of message-function mapping in the list of calls to `registerUiOutputListener`. 
+
+# label.py
+
+A custom node that adds a read-only label as a widget.
+
+```python
+    @classmethod
+    def INPUT_TYPES(s):
+        return {"required": {
+            "label" : ("LABEL", {"value":"Connect your latent below"}),
+            "latents" : ("LATENT", {}),
+        }
+
+    def my_func(self, label, latents):
+        # (label == "Connect your latent below") 
+```
