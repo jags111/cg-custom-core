@@ -9,6 +9,6 @@ shutil.copytree(module_js_directory, application_web_extensions_directory, dirs_
 
 NODE_CLASS_MAPPINGS = {}
 
-CC_VERSION = 2.1
+CC_VERSION = 2.2
 
 __ALL__ = [NODE_CLASS_MAPPINGS, CC_VERSION]
