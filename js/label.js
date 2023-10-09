@@ -48,7 +48,7 @@ app.registerExtension({
                     size: SIZE, 
                     _value : value,
                     get value() { return this._value;},
-                    set value(newValue) { this._value = newValue; },
+                    set value(newValue) {  },
                     draw(ctx, node, widget_width, y, widget_height) { 
                         Object.assign(this.inputEl.style, get_label_position_style(ctx, widget_width, y));
                     },
